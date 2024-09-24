@@ -24,35 +24,35 @@ def main():
         for event in pg.event.get():
             if event.type == pg.QUIT: return
         key_lst = pg.key.get_pressed()
-        ca_x=0
-        ca_y=0
-        if key_lst[pg.K_UP]:
 
-            ca_y=-1
-        if key_lst[pg.K_DOWN]:
-
-            ca_y=+1
-        if key_lst[pg.K_LEFT]:
-            ca_x=-1
-
-        if key_lst[pg.K_RIGHT]:
-            ca_x=+2
-
-        ca_rct.move_ip((ca_x,ca_y))   
-        x = -(tmr%4800)
+        x = -(tmr%3200)
         screen.blit(bg_img, [x, 0])
         screen.blit(bg_img2, [x+1600, 0])
         screen.blit(bg_img, [x+3200, 0])
         screen.blit(bg_img2, [x+4800, 0])
-        screen.blit(ca_img,[ca_rct[0]+x,ca_rct[1]])
+        sum_mv=[0,0]
+        if key_lst[pg.K_UP]:
+            sum_mv[1]=-1
+        elif key_lst[pg.K_DOWN]:
+            sum_mv[1]=1
+        elif key_lst[pg.K_LEFT]:
+            sum_mv[0]=-2
+        elif key_lst[pg.K_RIGHT]:
+            sum_mv[0]=2
+        else:
+            sum_mv[0]=-1
+        ca_rct.move_ip((sum_mv[0],sum_mv[1]))   
+
+
+        screen.blit(ca_img,ca_rct)
 
         # 動作確認
         txt = font.render(f"bg:{x}", True, (255, 255, 255))
         screen.blit(txt, [400, 0])
-        # x_txt = font.render(f"X:{str(ca_rct[0])}", True, (255, 255, 255))
-        # screen.blit(x_txt, [0, 0])
-        # y_txt = font.render(f"Y:{str(ca_rct[1])}", True, (255, 255, 255))
-        # screen.blit(y_txt, [200, 0])        
+        x_txt = font.render(f"X:{str(ca_rct[0]+x)}", True, (255, 255, 255))
+        screen.blit(x_txt, [0, 0])
+        y_txt = font.render(f"Y:{str(ca_rct[1])}", True, (255, 255, 255))
+        screen.blit(y_txt, [200, 0])        
 
         pg.display.update()
         tmr += 1
